@@ -23,7 +23,7 @@ export default function WelcomeScreen({ navigation }) {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      console.log("WelcomeScreen");
+      // console.log("WelcomeScreen");
     }
   }, [isFocused]);
 

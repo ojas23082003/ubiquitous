@@ -13,12 +13,16 @@ import { useIsFocused } from "@react-navigation/native";
 
 export default function ProfileScreen({ navigation }) {
   const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    dob: "",
+    gender: "",
     email: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
+    phone: "",
+    createdAt: "",
+    lastLogin: "",
+    history: [],
   });
 
   async function checkLogin() {
@@ -26,13 +30,13 @@ export default function ProfileScreen({ navigation }) {
     if (!token) {
       alert("Please log in!");
       navigation.navigate("Login");
-    } else setData({ ...data, email: token });
+    } else setData({ ...data, username: token });
   }
 
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      console.log("ProfileScreen");
+      // console.log("ProfileScreen");
       checkLogin();
     }
   }, [isFocused]);
@@ -50,8 +54,9 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.loginText}>Profile</Text>
         </View>
         <View style={styles.loginContainer}>
-          <Text>First Name : {data.firstName}</Text>
-          <Text>Last Name : {data.lastName}</Text>
+          <Text>First Name : {data.first_name}</Text>
+          <Text>Last Name : {data.last_name}</Text>
+          <Text>Username : {data.username}</Text>
           <Text>Email : {data.email}</Text>
           <Text>Phone Number : {data.phoneNumber}</Text>
           <TouchableNativeFeedback onPress={logout}>

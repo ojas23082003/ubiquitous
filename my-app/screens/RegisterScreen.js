@@ -27,7 +27,7 @@ export default function RegisterScreen({ navigation }) {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      console.log("RegisterScreen");
+      // console.log("RegisterScreen");
       checkLogin();
     }
   }, [isFocused]);

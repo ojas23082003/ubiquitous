@@ -25,7 +25,7 @@ export default function LoginScreen({ navigation }) {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      console.log("LoginScreen");
+      // console.log("LoginScreen");
       checkLogin();
     }
   }, [isFocused]);
