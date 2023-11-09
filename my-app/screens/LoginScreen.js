@@ -9,21 +9,26 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 import LoginMenu from "../components/LoginMenu";
 
 export default function LoginScreen({ navigation }) {
-  useEffect(() => {
-    console.log("LoginScreen");
-    async function checkLogin() {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        alert("You are already logged in!");
-        navigation.navigate("Profile");
-      }
+  async function checkLogin() {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      alert("You are already logged in!");
+      navigation.navigate("Profile");
     }
-    checkLogin();
-  }, []);
+  }
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      console.log("LoginScreen");
+      checkLogin();
+    }
+  }, [isFocused]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

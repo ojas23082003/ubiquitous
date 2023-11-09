@@ -6,13 +6,23 @@ import TestScreen from "./screens/TestScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Welcome">
+          {/* Welcome Screen */}
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+
           {/* Login screen  */}
           <Stack.Screen
             name="Login"

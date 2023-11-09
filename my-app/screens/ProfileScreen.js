@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ProfileScreen({ navigation }) {
   const [data, setData] = useState({
@@ -20,17 +21,21 @@ export default function ProfileScreen({ navigation }) {
     confirmPassword: "",
   });
 
+  async function checkLogin() {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      alert("Please log in!");
+      navigation.navigate("Login");
+    } else setData({ ...data, email: token });
+  }
+
+  const isFocused = useIsFocused();
   useEffect(() => {
-    console.log("ProfileScreen");
-    async function checkLogin() {
-      const token = await AsyncStorage.getItem("token");
-      if (!token) {
-        alert("Please log in!");
-        navigation.navigate("Login");
-      } else setData({ ...data, email: token });
+    if (isFocused) {
+      console.log("ProfileScreen");
+      checkLogin();
     }
-    checkLogin();
-  }, []);
+  }, [isFocused]);
 
   async function logout() {
     await AsyncStorage.removeItem("token");
