@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import DateField from "react-native-datefield";
+import Axios from "axios";
 
 import LoginMenu from "../components/LoginMenu";
 
@@ -83,7 +84,21 @@ export default function RegisterScreen({ navigation }) {
       alert("Please fill in all fields");
       return;
     }
-    // console.log(regDetails);
+    console.log(regDetails);
+    Axios.get("http://127.0.0.1:8000/get-users")
+      .then((response) => {
+        if (response.data.status == 200) {
+          alert("Registration successful!");
+          // console.log(response.data);
+        } else {
+          alert("Something went wrong! Please try again.");
+        }
+        console.log(response.data);
+      })
+      .catch((error) => {
+        alert(error);
+        alert("Something went wrong! Please check your internet connection.");
+      });
     await AsyncStorage.setItem("token", regDetails.username);
     navigation.navigate("Profile");
   };
