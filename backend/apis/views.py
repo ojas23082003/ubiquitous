@@ -8,7 +8,7 @@ from rest_framework import status
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User
-
+from rest_framework_jwt.utils import jwt_decode_handler
 
 # Create your views here.
 @api_view(['GET'])
@@ -57,4 +57,41 @@ def addData(request):
         return Response({"success":True,"profile":ser_profile.data})
     ser_profile = ProfileSerializer(profile,many=False)
     return Response({"success":True,"profile":ser_profile.data})
-    
+
+@api_view(['POST'])
+def getHistory(request):
+    id = request.data['id']
+    profile = Profile.objects.filter(id=id).first()
+    if profile is None:
+        return Response({"success":False,"message":"No user found"})
+    historys = profile.history.all()
+    ser_profile = ProfileSerializer(profile,many=False)
+    ser_history = HistorySerializer(historys,many=True)
+    return Response({"success":True,"profile":ser_profile.data,"history":ser_history.data})
+
+@api_view(['POST'])
+def getDetails(request):
+    access = request.data['access']
+    decoded_payload = jwt_decode_handler(access)
+    print(decoded_payload)
+    id = decoded_payload['user_id']
+    profile = Profile.objects.filter(user__id=id).first()
+    if profile is None:
+        return Response({"success":False,"message":"No profile found"})
+    ser_profile = ProfileSerializer(profile,many=False)
+    history = profile.history.all()
+    ser_history = HistorySerializer(history,many=True)
+    user = profile.user
+    ser_user = UserSerializer(user,many=False)
+    return Response({"success":True,"profile":ser_profile.data,"user":ser_user.data,"histpry":ser_history.data})
+    # return Response({"success":True,"decoded":"Data"})
+
+@api_view(['POST'])
+def addUser(request):
+    data = request.data
+    user = User(first_name=data['first_name'],last_name=data['last_name'],email=data['email'],username=data['username'])
+    user.set_password(data['password'])
+    user.save()
+    profile = Profile(dob=data['dob'],gender=data['gender'],user=user,phone=int(data['phone']))
+    profile.save()
+    return Response({"status":True,"message":"User registered successfuly"})
