@@ -31,7 +31,7 @@ export default function WelcomeScreen({ navigation }) {
     <ImageBackground style={styles.background}>
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require("../assets/icon.png")} />
-        <Text style={styles.loginText}>Depression Detection</Text>
+        <Text style={styles.loginText}>Depression Detection App</Text>
       </View>
       <View style={styles.loginContainer}>
         <TouchableNativeFeedback onPress={handleClick}>
